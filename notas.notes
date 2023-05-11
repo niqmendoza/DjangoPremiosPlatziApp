@@ -1,0 +1,106 @@
+*primeros pasos*
+
+python -m venv venv !crear el entorno
+venv\Scripts\activate !acticar el entorno
+source venv/Scripts/Activate !gitbash pararse en carpeta
+pip install django
+git init !para control de versiones
+python  manage.py startapp polls  !crear carpeta de polls
+python manage.py makemigrations polls !crear los modelos por medio de ORM
+python manage.py migrate !toma el archivo y ejecutarlo en sql en la base de datos
+py manage.py shell !para ingresar a la consola interactiva de gjango
+
+#cambios
+!se hacen saliendo del shell de django
+py manage.py makemigrations polls !para cuando hago algun cambio, lo asento con esto
+python manage.py migrate !se corre con esto
+
+
+#utilidades
+from django.utils import timezone !esto se usa para manejar los datos de django de formato zona horaria, es lo mismo que datetime pero con zona horaria
+import os / os.system('cls') !para limpiar la consola
+
+#querys
+py manage.py shell !para ingresar a la consola interactiva de gjango
+Question.objects.all() !para acceder a todos los registros de mi tabla Question(como un select * from Question)
+Question(question_text = 'cual es la mejor escuela de platzi', pub_date=timezone.now()).save() !para guardar una pregunta en la base de datos(insertar datos)
+Question.objects.get(pk=1) !para consultar por el ID 1 (pk es primary key)
+Question.objects.filter(pub_date__year = timezone.now().year()) !el __ es para acceder a atributos especiales, aca busco las transacciones de hoy
+!docu django querys https://docs.djangoproject.com/en/3.2/topics/db/queries/#field-lookups-intro
+Question.objects.filter(pk=1) !la dif con filter es que no arroja error como get, sino que si no lo encuentra arroja una lista vacia
+Question.objects.filter(question_text__startswith='cual') !me trae todos los registros que arrancan con 'cual'
+!despues de asignar q =Question.objects.get(pk=1)
+q.choice_set.create(choice_text='el curso basico de python', votes=0) !para crear una entrada en la tabla de choice
+q.choice_set.sount() !contar 
+Choice.objects.filter(question__pub_date__year=timezone.year().now())
+
+#algunos atributos especiales de django con __
+__gt = Mayor que
+__gte = Mayor o igual que
+__lt = Menor que
+__lte = Menos o igual que
+__startswith = Empieza con
+__endswith = Termina con
+|
+
+
+!iniciar el proyecto con django
+
+django-admin startproject premiosplatziapp !creo el proyecto
+!crear archivo .gitignore y poner venv/ para que no este el env
+python manage.py runserver !para correr el sevidor incorporado en django, hay que pararse en la carpeta con cd(gitbash)
+
+!pryectos y apps en django
+un proyecto en django son un conjunto de aplicaciones, las aplicaciones son como objetos modulares que se pueden exportar e importar entre proyectos
+
+!primero
+cree una carpeta 'polls' con #python  manage.py startapp polls
+entre al archivo urls.py de premiosplatziapp y agregue un path dentro de urlpatterns(agregue ,include para hacer esto en el import)
+#path('polls/', include('polls.urls')
+
+!cree un archivo urls.py en la carpeta de polls con:
+'''from django.urls import path
+
+from . import views #cuando pongo . es para referir a esta misma carpeta de polls
+
+urlpatterns = [
+    path('', views.index, name='index')
+]'''
+
+!hice un git commit
+primero con #git add -A 
+despues hice el commit con #git commit -m 'nuestro_primer_pryecto_platzi'
+
+
+!cambie zona horaria en settings.py
+borre UTC y puse America/Argentina/Buenos_Aires
+
+
+!ORM
+!object relational mapping
+una ORM, por medio de *librerias y frameworks*, hace que una base de datos relacional (RDB) se transforme
+en un archivo.py por medio de programacion orientada a objetos.
+dentro del archivo.py se encuentran *'modelos'* que vendrian a ser el equivalente a *'tablas'* de una db
+la ORM crea estos modelos usando CLASES
+osea que un modelo es la replica de una tabla en programacion orientada a objetos por medio de CLASES
+y los *atributos* que tenemos dentro de las clases vendrian a *reprensentar a las columnas de cada tabla*
+
+
+!creo las tablas del diagrama relacional
+creo toda la logica dentro de polls/models.py ya que polls va a manejar toda la logica
+creo clases de Question y Choices en models.py
+en settings.py agrego a installed apps mi app polls
+en la terminal corro #python manage.py makemigrations polls
+esto crea el archivo 0001 dentro de migrations, que hace el trabajo de la ORM de transformar los datos que le di a db
+y con #python manage.py migrate
+tomo el archivo y lo ejecuto en sql en mi base de datos
+
+
+!emmet html y django autocomplete
+control + shift + P, poner esta linea de codigo en el usersettings
+"emmet.includeLanguages":{
+        "django-html": "html"
+    } 
+
+
+
