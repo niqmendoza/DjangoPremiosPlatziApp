@@ -12,7 +12,7 @@ urlpatterns = [
     
     #'<int:questio_id>/' es la forma que django nos da para pasar parametros variables mediante la url que usamos para una pagina web
     #accedo con /polls/5/
-    path('<int:pk>/detail/estaeslamejorpagina', views.DetailView.as_view(), name='detail'), 
+    path('<int:pk>/detail/', views.DetailView.as_view(), name='detail'), 
     
     #accedo con /polls/5/results
     path('<int:pk>/results/', views.ResultsView.as_view(), name='results'),

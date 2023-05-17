@@ -18,7 +18,7 @@ class Question(models.Model):
     #esto retorna verdadero o falso si la pregunta fue publicada recientemente
     def was_published_recently(self):
         #con esto tomo el dia actual y con datetime le resto 1 dia
-        return self.pub_date >= timezone.now() - datetime.timedelta(days=1) #timedelta nos define una diferencia de tiempo
+        return timezone.now() >= self.pub_date >= timezone.now() - datetime.timedelta(days=1) #timedelta nos define una diferencia de tiempo
 
 #y aca la tabla de choices
 class Choice(models.Model):
